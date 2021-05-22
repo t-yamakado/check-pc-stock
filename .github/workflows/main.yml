@@ -32,7 +32,7 @@ jobs:
               #       node-version: "12.x"
               # - run: npm ci
               # - run: npm run cy:test
-              run: exit 1
+              run: exit 0
             - name: Notify Slack on failure
               if: failure() && steps.check-stock.outcome == 'failure'
               run: |
