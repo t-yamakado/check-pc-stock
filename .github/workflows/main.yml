@@ -34,7 +34,7 @@ jobs:
               #       node-version: "12.x"
               # - run: npm ci
               # - run: npm run cy:test
-              run: echo ${{ secrets.TEST }} && echo ${TEST} && exit 1
+              run: echo ${{ secrets.TEST }} && echo "$TEST" && echo $TEST && exit 1
             - name: Notify Slack
               if: failure() && steps.cypress-test.outcome == 'failure'
               run: |
