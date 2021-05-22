@@ -27,14 +27,12 @@ jobs:
             # - uses: actions/checkout@v2
             - name: Use Node.js
               id: cypress-test
-              env:
-                  TEST: ${{ secrets.TEST }}
               #   uses: actions/setup-node@v1
               #   with:
               #       node-version: "12.x"
               # - run: npm ci
               # - run: npm run cy:test
-              run: echo ${{ secrets.TEST }} && echo "$TEST" && echo $TEST && exit 1
+              run: echo ${{ secrets.TEST }} && exit 1
             - name: Notify Slack
               if: failure() && steps.cypress-test.outcome == 'failure'
               run: |
@@ -46,7 +44,7 @@ jobs:
                         'https://slack.com/api/chat.postMessage' \
                         -d 'token=${{ secrets.SLACK_BOT_TOKEN }}' \
                         -d 'channel=${{ secrets.TARGET_CHANNEL }}' \
-                        -d 'test=$data'
+                        -d 'text=$data'
     # slack-notification:
     #     # The type of runner that the job will run on
     #     runs-on: ubuntu-latest
