@@ -24,21 +24,17 @@ jobs:
     cypress-test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            # - uses: actions/checkout@v2
             - name: Use Node.js
               id: cypress-test
-              uses: actions/setup-node@v1
-              with:
-                  node-version: "12.x"
-            - run: npm ci
-            - run: npm run cy:test
-    slack-notification:
-        # The type of runner that the job will run on
-        runs-on: ubuntu-latest
-        # Steps represent a sequence of tasks that will be executed as part of the job
-        steps:
+              #   uses: actions/setup-node@v1
+              #   with:
+              #       node-version: "12.x"
+              # - run: npm ci
+              # - run: npm run cy:test
+              run: exit 1
             - name: Notify Slack
-              if: steps.cypress-test.outcome == 'failure'
+              if: failure() && steps.cypress-test.outcome == 'failure'
               run: |
                   data=$(cat <<EOF
                   {
@@ -53,6 +49,27 @@ jobs:
                         -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
                         -d "$data" \
                         https://slack.com/api/chat.postMessage
+    # slack-notification:
+    #     # The type of runner that the job will run on
+    #     runs-on: ubuntu-latest
+    #     # Steps represent a sequence of tasks that will be executed as part of the job
+    #     steps:
+    #         - name: Notify Slack
+    #           if: steps.cypress-test.outcome == 'failure'
+    #           run: |
+    #               data=$(cat <<EOF
+    #               {
+    #                 "channel": "xx_pc_stock_notification",
+    #                 "username": "github-actions",
+    #                 "text": "PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/"
+    #               }
+    #               EOF
+    #               )
+    #               curl -X POST \
+    #                     -H "Content-type: application/json; charset=utf-8" \
+    #                     -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+    #                     -d "$data" \
+    #                     https://slack.com/api/chat.postMessage
     print_date:
         runs-on: ubuntu-latest
         steps:
