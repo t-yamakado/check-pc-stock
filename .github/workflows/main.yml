@@ -27,12 +27,14 @@ jobs:
             # - uses: actions/checkout@v2
             - name: Use Node.js
               id: cypress-test
+              env:
+                  TEST: ${{ secrets.TEST }}
               #   uses: actions/setup-node@v1
               #   with:
               #       node-version: "12.x"
               # - run: npm ci
               # - run: npm run cy:test
-              run: echo ${{ secrets.TEST }} && exit 1
+              run: echo ${{ secrets.TEST }} && echo ${TEST} && exit 1
             - name: Notify Slack
               if: failure() && steps.cypress-test.outcome == 'failure'
               run: |
