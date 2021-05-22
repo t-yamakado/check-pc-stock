@@ -21,23 +21,35 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    cypress-test:
+    check-stock:
         runs-on: ubuntu-latest
         steps:
             # - uses: actions/checkout@v2
             - name: Use Node.js
-              id: cypress-test
+              id: check-stock
               #   uses: actions/setup-node@v1
               #   with:
               #       node-version: "12.x"
               # - run: npm ci
               # - run: npm run cy:test
-              run: echo ${{ secrets.TEST }} && exit 1
-            - name: Notify Slack
-              if: failure() && steps.cypress-test.outcome == 'failure'
+              run: exit 1
+            - name: Notify Slack on failure
+              if: failure() && steps.check-stock.outcome == 'failure'
               run: |
                   DATA=$(cat <<EOF
-                    "PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/"
+                    在庫切れだよ(;ω;)
+                  EOF
+                  )
+                  curl -X POST \
+                        "https://slack.com/api/chat.postMessage" \
+                        -d "token=${{ secrets.SLACK_BOT_TOKEN }}" \
+                        -d "channel=${{ secrets.TARGET_CHANNEL }}" \
+                        -d "text=$DATA"
+            - name: Notify Slack on success
+              if: success() && steps.check-stock.outcome == 'success'
+              run: |
+                  DATA=$(cat <<EOF
+                    PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/
                   EOF
                   )
                   curl -X POST \
