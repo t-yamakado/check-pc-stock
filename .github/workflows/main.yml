@@ -38,7 +38,7 @@ jobs:
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
             - name: Notify Slack
-              if: steps.cypress-test.outcome === 'failure'
+              if: steps.cypress-test.outcome == 'failure'
               run: |
                   data=$(cat <<EOF
                   {
