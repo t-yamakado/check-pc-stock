@@ -2,38 +2,39 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    # Triggers the workflow on push or pull request events but only for the main branch
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    # This workflow contains a single job called "build"
+    build:
+        # The type of runner that the job will run on
+        runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Notify Slack
-        run: |
-          data=$(cat <<EOF
-          {
-            "channel": "xx_pc_stock_notification",
-            "username": "github-actions",
-            "text": "Success"
-          }
-          EOF
-          )
-          curl -X POST \
-               -H "Content-type: application/json; charset=utf-8" \
-               -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-               -d "$data" \
-               https://slack.com/api/chat.postMessage
+        # Steps represent a sequence of tasks that will be executed as part of the job
+        steps:
+            - name: Notify Slack
+              if: failure()
+              run: |
+                  data=$(cat <<EOF
+                  {
+                    "channel": "xx_pc_stock_notification",
+                    "username": "github-actions",
+                    "text": "PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/"
+                  }
+                  EOF
+                  )
+                  curl -X POST \
+                       -H "Content-type: application/json; charset=utf-8" \
+                       -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+                       -d "$data" \
+                       https://slack.com/api/chat.postMessage
