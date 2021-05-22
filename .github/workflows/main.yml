@@ -44,7 +44,7 @@ jobs:
                         'https://slack.com/api/chat.postMessage' \
                         -d 'token=${{ secrets.SLACK_BOT_TOKEN }}' \
                         -d 'channel=${{ secrets.TARGET_CHANNEL }}' \
-                        -d 'text=$data'
+                        -d 'text=${data}'
     # slack-notification:
     #     # The type of runner that the job will run on
     #     runs-on: ubuntu-latest
