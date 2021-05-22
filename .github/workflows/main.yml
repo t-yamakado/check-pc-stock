@@ -42,8 +42,8 @@ jobs:
                   )
                   curl -X POST \
                         'https://slack.com/api/chat.postMessage' \
-                        -d 'token=${{secrets.SLACK_BOT_TOKEN}}' \
-                        -d 'channel=${{secrets.TARGET_CHANNEL}}' \
+                        -d 'token=${{ secrets.SLACK_BOT_TOKEN }}' \
+                        -d 'channel=${{ secrets.TARGET_CHANNEL }}' \
                         -d 'test=$data'
     # slack-notification:
     #     # The type of runner that the job will run on
