@@ -24,7 +24,8 @@ jobs:
     check-stock:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - name: Check out repository
+              uses: actions/checkout@v2
             - name: Use Node.js
               id: check-stock
               uses: actions/setup-node@v1
