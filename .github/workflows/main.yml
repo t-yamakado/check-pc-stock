@@ -35,18 +35,19 @@ jobs:
               run: |
                   npm ci
                   npm run cy:test
-            - name: Notify Slack on failure
-              if: failure() && steps.check-stock.outcome == 'failure'
-              run: |
-                  DATA=$(cat <<EOF
-                    <@U011D376NVB> 在庫切れだよ(;ω;)
-                  EOF
-                  )
-                  curl -X POST \
-                        "https://slack.com/api/chat.postMessage" \
-                        -d "token=${{ secrets.SLACK_BOT_TOKEN }}" \
-                        -d "channel=${{ secrets.TARGET_CHANNEL }}" \
-                        -d "text=$DATA"
+            # comment in for debug
+            # - name: Notify Slack on failure
+            #   if: failure() && steps.check-stock.outcome == 'failure'
+            #   run: |
+            #       DATA=$(cat <<EOF
+            #         <@U011D376NVB> 在庫切れだよ(;ω;)
+            #       EOF
+            #       )
+            #       curl -X POST \
+            #             "https://slack.com/api/chat.postMessage" \
+            #             -d "token=${{ secrets.SLACK_BOT_TOKEN }}" \
+            #             -d "channel=${{ secrets.TARGET_CHANNEL }}" \
+            #             -d "text=$DATA"
             - name: Notify Slack on success
               if: success() && steps.check-stock.outcome == 'success'
               run: |
