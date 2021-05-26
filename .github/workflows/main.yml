@@ -39,7 +39,7 @@ jobs:
               if: failure() && steps.check-stock.outcome == 'failure'
               run: |
                   DATA=$(cat <<EOF
-                    在庫切れだよ(;ω;)
+                    <@U011D376NVB> 在庫切れだよ(;ω;)
                   EOF
                   )
                   curl -X POST \
@@ -51,7 +51,7 @@ jobs:
               if: success() && steps.check-stock.outcome == 'success'
               run: |
                   DATA=$(cat <<EOF
-                    PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/
+                    <@U0113NR1798> <@U011D376NVB> PCが購入できる状態になったよ！ -> https://jp.store.asus.com/store/asusjp/ja_JP/pd/productID.5483222700/
                   EOF
                   )
                   curl -X POST \
